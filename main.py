@@ -1,10 +1,20 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
 import pandas as pd
 
 # FastAPI uygulamasını başlatıyoruz
 app = FastAPI(title="Kalp Hastaliği Risk Tahmin API")
+
+# WEB (CHROME) ERİŞİMİ İÇİN CORS İZİNLERİ (Sihirli Kısım Burası)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],     # Herkese (senin GitHub sitene de) izin ver
+    allow_credentials=False, # Çakışmayı önlemek için False
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Eğittiğimiz modeli ve ölçeklendiriciyi (scaler) hafızaya alıyoruz
 model = joblib.load("kalp_riski_modeli.pkl")
